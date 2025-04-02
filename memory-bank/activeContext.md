@@ -15,6 +15,7 @@ We are transitioning to Phase 2 of the Click Urban e-commerce project, focusing 
 - **Homepage**: Implemented a hero section, featured products, categories, and newsletter sections
 - **Image Handling**: Updated Next.js config to handle SVG images
 - **Local Images**: Downloaded and integrated high-quality category and product images
+- **Vercel Deployment Fix**: Updated build script to include `prisma generate` to fix Prisma client initialization error on Vercel
 
 ## Next Steps
 1. Complete database migration and setup

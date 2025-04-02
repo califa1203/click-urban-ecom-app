@@ -79,7 +79,7 @@
 - Phase 4: Admin Dashboard Applications
 
 ## Known Issues
-- None at this stage
+- ~~Prisma client initialization error on Vercel deployment~~ (Fixed by updating build script to include `prisma generate`)
 
 ## Project Evolution
 - Initial project brief established
@@ -108,3 +108,4 @@
   - Users API with role-based access and address management
   - Orders API with line items and status tracking
   - Content API with blog post management and publishing control
+- Fixed Prisma client initialization error on Vercel by updating build script
