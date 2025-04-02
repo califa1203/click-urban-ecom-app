@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+}
+
+// User model
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String?   // Hashed password if not using Supabase Auth
+  image         String?   // Profile image URL
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  orders        Order[]
+  addresses     Address[]
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+// Product model
+model Product {
+  id              String           @id @default(cuid())
+  name            String
+  description     String
+  price           Float
+  compareAtPrice  Float?           // Original price for discounts
+  images          String[]         // Array of image URLs
+  category        Category         @relation(fields: [categoryId], references: [id])
+  categoryId      String
+  inventory       Int              @default(0)
+  isActive        Boolean          @default(true)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  orderItems      OrderItem[]
+  variants        ProductVariant[]
+}
+
+// Product variant model
+model ProductVariant {
+  id          String  @id @default(cuid())
+  productId   String
+  product     Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name        String  // e.g., "Size", "Color"
+  value       String  // e.g., "Large", "Red"
+  price       Float?  // Optional override price
+  inventory   Int     @default(0)
+}
+
+// Category model
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  image       String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+// Order model
+model Order {
+  id                String      @id @default(cuid())
+  user              User        @relation(fields: [userId], references: [id])
+  userId            String
+  status            OrderStatus @default(PENDING)
+  total             Float
+  items             OrderItem[]
+  shippingAddress   String?
+  billingAddress    String?
+  paymentIntent     String?     // Stripe payment intent ID
+  paymentStatus     String?     // paid, pending, failed
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+// Order item model
+model OrderItem {
+  id          String  @id @default(cuid())
+  order       Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId     String
+  product     Product @relation(fields: [productId], references: [id])
+  productId   String
+  quantity    Int
+  price       Float   // Price at time of purchase
+  variantInfo String? // JSON string of variant information
+}
+
+// Address model
+model Address {
+  id          String  @id @default(cuid())
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  name        String
+  line1       String
+  line2       String?
+  city        String
+  state       String
+  postalCode  String
+  country     String
+  isDefault   Boolean @default(false)
+}
+
+// Content model (for blog posts)
+model Content {
+  id            String    @id @default(cuid())
+  title         String
+  slug          String    @unique
+  content       String    // Markdown or HTML content
+  excerpt       String?
+  featuredImage String?
+  published     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}

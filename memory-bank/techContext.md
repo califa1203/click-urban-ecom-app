@@ -10,8 +10,14 @@
 
 ## Backend Technologies
 - **API Routes**: Next.js API Routes
-- **Database**: PostgreSQL
-- **ORM**: Prisma (planned)
+- **Database**: PostgreSQL via Supabase
+- **ORM**: Prisma
+- **Database Schema**:
+  - User model with role-based permissions
+  - Product model with variants and categories
+  - Order model with line items and status tracking
+  - Content model for blog posts and marketing materials
+  - Address model for shipping and billing
 - **Authentication**: Enhanced security with:
   - Multi-factor authentication (MFA)
   - Passwordless options (biometrics, social logins)
