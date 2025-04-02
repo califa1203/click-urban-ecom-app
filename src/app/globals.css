@@ -62,8 +62,28 @@
   --font-mono: var(--font-geist-mono);
 }
 
+.dark {
+  /* Dark theme */
+  --background: var(--dark-blue);
+  --foreground: var(--white);
+  --primary: var(--light-blue);
+  --primary-foreground: var(--white);
+  --secondary: var(--grey-800);
+  --secondary-foreground: var(--white);
+  --accent: var(--red);
+  --accent-foreground: var(--white);
+  --muted: var(--grey-800);
+  --muted-foreground: var(--grey-400);
+  --card: var(--grey-900);
+  --card-foreground: var(--white);
+  --border: var(--grey-700);
+  --input: var(--grey-700);
+  --ring: var(--light-blue);
+}
+
+/* For system preference */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light) {
     /* Dark theme */
     --background: var(--dark-blue);
     --foreground: var(--white);
